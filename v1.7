@@ -1,0 +1,106 @@
+import time
+import datetime
+import subprocess
+import platform
+import requests
+
+# Colors
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+RED = "\033[91m"
+CYAN = "\033[96m"
+RESET = "\033[0m"
+
+webhook_url = "https://discord.com/api/webhooks/1370450798429077547/3mISjY_PaWGDXVXn7vLbPH70qEgV-j1o_7Jy7mzNYVDqsZ7N3jJA3uixTrCIEZH7wdz7"
+
+print(f"{GREEN}FPS Console Dev Helper Started. Type !Exit to stop.{RESET}")
+
+while True:
+    msg = input(f"{YELLOW}Console Command: {RESET}")
+
+    # Convert the command to lowercase for case-insensitivity
+    cmd = msg[1:].lower() if msg.startswith('!') else msg.lower()
+
+    try:
+        if cmd == "alive":
+            # Send message to webhook
+            requests.post(webhook_url, json={"content": "FPS Console Dev Helper Is Enabled!"})
+            print(f"{GREEN}FPS Console Dev Helper Is Enabled!{RESET}")
+
+        elif cmd == "version":
+            # Send message to webhook
+            requests.post(webhook_url, json={"content": "Version: 1.7"})
+            print(f"{CYAN}Version: 1.7{RESET}")
+
+        elif cmd == "time":
+            # Send message to webhook
+            timestamp = int(time.time())
+            utc_time = datetime.datetime.utcfromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S UTC")
+            message = f"Relative Time: <t:{timestamp}:R>\nUTC Time: <t:{timestamp}:F> (`{utc_time}`)"
+            requests.post(webhook_url, json={"content": message})
+            print(f"{CYAN}Console Time:\n{message}{RESET}")
+
+        elif cmd == "uptime":
+            try:
+                if platform.system() == "Windows":
+                    result = subprocess.getoutput("net stats srv | find \"Statistics since\"")
+                else:
+                    result = subprocess.getoutput("uptime")
+                # Send uptime to webhook
+                requests.post(webhook_url, json={"content": f"System Uptime:\n```{result}```"})
+                print(f"{CYAN}Uptime:\n{result}{RESET}")
+            except Exception as e:
+                print(f"{RED}Error getting uptime: {str(e)}{RESET}")
+
+        elif cmd == "help":
+            help_text = """
+**Available Commands:**
+
+**`!Alive`**  
+_Description:_ Sends a message to the webhook to confirm that the script is running.  
+_Example:_ `!Alive`
+
+**`!Version`**  
+_Description:_ Displays the current version of the script.  
+_Example:_ `!Version`
+
+**`!Time`**  
+_Description:_ Shows the current system time in Discord-friendly format, including relative time and UTC.  
+_Example:_ `!Time`
+
+**`!Uptime`**  
+_Description:_ Displays the system's uptime (how long the system has been running). This command works differently on Windows and UNIX-based systems.  
+_Example:_ `!Uptime`
+
+**`!Exit`**  
+_Description:_ Stops the script and exits the program.  
+_Example:_ `!Exit`
+
+**`!Help`**  
+_Description:_ Shows this help message with an explanation of all available commands.  
+_Example:_ `!Help`
+
+**`!Msg`**  
+_Description:_ Send a custom message to the webhook.  
+_Example:_ `!Msg Hello!`
+"""
+            print(f"{CYAN}{help_text}{RESET}")
+
+        elif cmd == "exit":
+            print(f"{RED}Exiting FPS Console Dev Helper.{RESET}")
+            break
+
+        elif cmd.startswith("msg"):
+            message = msg[4:].strip()  # Removing !msg
+            if message:
+                # Send custom message to the webhook
+                requests.post(webhook_url, json={"content": message})
+                print(f"{CYAN}Message sent: {message}{RESET}")
+            else:
+                print(f"{RED}Invalid usage of !msg. Please provide a message after !msg.{RESET}")
+
+        else:
+            print(f"{RED}Unknown command: {msg}{RESET}")
+
+    except requests.exceptions.RequestException as e:
+        print(f"{RED}Error with webhook request: {str(e)}{RESET}")
