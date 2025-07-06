@@ -7,9 +7,6 @@
 
 **Current Core Version:**`v1.7`
 
-Official Extensions/Changes
-
-
 ### Next Version
 
 ***1.7.2 / 1.8 / 2.0***
