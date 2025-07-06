@@ -1,11 +1,18 @@
 # FPS Console Dev Helper
 
+## Version Info
+
 ![Python](https://img.shields.io/badge/Python-3.x-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-**FPS Console Dev Helper** is a cross-platform Python tool that lets developers execute console commands, check system info, and send messages directly to a **Discord webhook**, all in real-time from the terminal.
+**Current Core Version:**`v1.7`
 
-**Current Version:** `v1.7`
+Official Extensions/Changes
+
+
+### Next Version
+
+***1.7.2 / 1.8 / 2.0***
 
 ---
 
@@ -44,6 +51,8 @@ Copy
 Edit
 python script.py
 
+---
+
 ## 💡 Available Commands
 Command	Description	Example
 
@@ -54,6 +63,8 @@ Command	Description	Example
 !Msg	Sends a custom message to the webhook.	!Msg Hello, Discord!
 !Help	Prints a help guide in the console.	!Help
 !Exit	Stops the script safely.	!Exit
+
+---
 
 ## 📃 License
 ### This project is licensed under the MIT License.
